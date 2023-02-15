@@ -1,0 +1,71 @@
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+  }
+  
+  label {
+    margin-top: 10px;
+  }
+  
+  input[type="submit"] {
+    margin-top: 20px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+  
+  input[type="text"], input[type="date"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-top: 5px;
+    width: 100%;
+    text-align: center; /* metnin yatayda ortalanması */
+    display: flex;
+    align-items: center; /* metnin dikeyde ortalanması */
+    justify-content: center; /* metnin yatayda ortalanması */
+  }
+  
+
+  #frame{
+    margin-left: 25%;
+    margin-right: 25%;
+  }
+
+  .book-preview {
+    display: flex;
+    align-items: center;
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .book-preview img {
+    margin-right: 20px;
+  }
+  
+  .book-preview h2 {
+    margin: 0;
+  }
+  
+  .book-preview h3 {
+    margin: 0;
+    font-weight: normal;
+  }
+  
+  

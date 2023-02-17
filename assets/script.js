@@ -2,17 +2,21 @@ const form = document.querySelector("form");
 
 // Form submit event listener'ı ekleyelim
 form.addEventListener("submit", (event) => {
-  event.preventDefault();// Sayfanın yenilenmesini engelleyelim
+  event.preventDefault(); // Sayfanın yenilenmesini engelleyelim
 
   // Formdaki alanları alalım
   const image_url = document.getElementById("image_url").value;
-  const average_rating_rounded = document.getElementById("average_rating_rounded").value;
+  const average_rating_rounded = document.getElementById(
+    "average_rating_rounded"
+  ).value;
   const books_count = document.getElementById("books_count").value;
   const original_title = document.getElementById("original_title").value;
   const image_medium_url = document.getElementById("image_medium_url").value;
   const isbn = document.getElementById("isbn").value;
   const average_rating = document.getElementById("average_rating").value;
-  const original_publication_year = document.getElementById("original_publication_year").value;
+  const original_publication_year = document.getElementById(
+    "original_publication_year"
+  ).value;
   const title = document.getElementById("title").value;
   const language_code = document.getElementById("language_code").value;
   const id = document.getElementById("id").value;
@@ -37,6 +41,8 @@ form.addEventListener("submit", (event) => {
   // Kitap önizlemesi HTML kodunu sayfaya ekleyelim
   document.body.insertAdjacentHTML("beforeend", bookPreviewHTML);
 
+  window.scrollBy(0, 300); //sayfayı kaydır
+
   const formData = new FormData(form);
   const formObject = Object.fromEntries(formData.entries());
 
@@ -49,7 +55,3 @@ form.addEventListener("submit", (event) => {
     .then((data) => console.log(data))
     .catch((error) => console.error(error));
 });
-
-
-
-  

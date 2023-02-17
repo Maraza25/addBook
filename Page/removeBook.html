@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Remove Book Form</title>
+</head>
+
+<body>
+
+<style>
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+}
+
+input {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 10px;
+}
+
+button:hover {
+  background-color: #3e8e41;
+}
+
+#result {
+  margin: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background-color: #f2f2f2;
+}
+
+#container{
+
+  margin-left: 35%;
+  margin-right: 35%;
+}
+
+</style>
+<div id="container">
+  <form>
+    <label for="bookId">Enter Book ID to Remove:</label>
+    <input type="text" id="bookId" name="bookId" required>
+    <br>
+    <button type="submit" onclick="submitForm(event)">Remove Book</button>
+  </form>
+  <div id="result"></div>
+
+</div>
+
+  
+  <script>
+    function submitForm(event) {
+      event.preventDefault(); // Sayfanın yenilenmesini önle
+      const bookId = document.getElementById("bookId").value;
+      fetch("/removeBook", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "id=" + bookId
+      })
+        .then(response => response.text())
+        .then(data => {
+          const resultDiv = document.getElementById("result");
+          resultDiv.textContent = data;
+        })
+        .catch(error => console.error(error));
+    }
+  </script>
+</body>
+
+</html>

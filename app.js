@@ -15,17 +15,13 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use(express.static("assets"));
 app.use(express.static("Data"));
-app.use(express.static("Page"));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
+
 
 app.post("/removeBook", (req, res) => {
   // body-parser modülü ile gelen isteğin vücudundaki _id'ye erişin
-  const id = req.body.id;
+  const id = req.body._id;
   console.log(`Received book ID to remove: ${id}`);
   
 
@@ -52,30 +48,80 @@ app.post("/removeBook", (req, res) => {
   }
 });
 
-// // Kitapları silmek için endpoint
-// app.get("/removeBook", (req, res) => {
+app.post("/getBook", (req, res) => {
+  // body-parser modülü ile gelen isteğin vücudundaki _id'ye erişin
+  const id = req.body._id;
+  console.log(req.body);
+  
 
-//     const id = req.query.id;
-//     console.log(`Received ID: ${id}`);
-//     res.send(`Received ID: ${id}`);
+  // JSON verilerinin bulunduğu dosya
+  const FILE_PATH = "./Data/data_good-books-ds__doc_0_10050.json";
 
-// });
+  // JSON dosyasındaki verileri okuyun
+  const books = JSON.parse(fs.readFileSync(FILE_PATH));
+
+  // Verilerin _id özelliği ile eşleşen öğeyi bulun
+  const book = books.find((book) => book._id === id);
+
+  if (!book) {
+    // Eşleşen bir öğe bulunamadı
+    res.send("Bu _id ile bir kitap bulunamadı.");
+  } else {
+    // Eşleşen öğe bulundu, kitap verisini gönderin
+    res.send(book);
+  }
+});
+
+app.post("/updateBook", (req, res) => {
+  // Gelen JSON verilerine erişin
+  const newBookData = req.body;
+
+  // JSON verilerinin bulunduğu dosya
+  const FILE_PATH = "./Data/data_good-books-ds__doc_0_10050.json";
+
+  // JSON dosyasındaki verileri okuyun
+  const books = JSON.parse(fs.readFileSync(FILE_PATH));
+
+  // Gelen JSON verilerindeki _id değerine sahip bir öğe var mı diye kontrol edin
+  const index = books.findIndex((book) => book._id === newBookData._id);
+
+  console.log(newBookData._id);
+
+  if (index === -1) {
+    // Eşleşen bir öğe bulunamadı
+    res.send("No basdaook found to be updated.");
+  } else {
+    // Eşleşen bir öğe var, kitabın bilgilerini güncelleyin
+    books[index] = newBookData;
+    res.send(`The book with ID ${newBookData._id} has been successfully updated.`);
+  }
+
+  // Güncellenmiş JSON verilerini dosyaya yazın
+  fs.writeFileSync(
+    FILE_PATH,
+    prettier.format(JSON.stringify(books), { parser: "json" })
+  );
+});
+
+
+
+
 
 // Yeni bir kitap eklemek için endpoint
 app.post("/addBook", (req, res) => {
   const book = {
-    id: req.body.id,
-    title: req.body.title,
+    image: req.body.image_url,
+    average_rating_rounded: req.body.average_rating_rounded,
+    books_count: req.body.books_count,
     original_title: req.body.original_title,
+    image_medium: req.body.image_medium_url,
     isbn: req.body.isbn,
     average_rating: req.body.average_rating,
-    average_rating_rounded: req.body.average_rating_rounded,
-    ratings_count: req.body.ratings_count,
-    image_url: req.body.image_url,
-    image_medium_url: req.body.image_medium_url,
     original_publication_year: req.body.original_publication_year,
-    books_count: req.body.books_count,
+    title: req.body.title,
     language_code: req.body.language_code,
+    id: req.body.id,
+    ratings_count: req.body.ratings_count,
     original_series: req.body.original_series,
     authors: req.body.authors,
     _id: idCreator(),
@@ -138,6 +184,10 @@ function idCreator() {
   // Sonuç olarak 20 karakter uzunluğunda bir benzersiz kimlik döndür
   return "-" + newId;
 }
+
+
+
+
 
 app.listen(PORT, () =>
   console.log(`Sunucu ${PORT} portunda çalışıyor... http://localhost:${PORT}`)
